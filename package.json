@@ -1,6 +1,6 @@
 {
-  "name": "pairdrop",
-  "version": "1.11.2",
+  "name": "pmclip",
+  "version": "25.04.04",
   "type": "module",
   "description": "",
   "main": "server/index.js",

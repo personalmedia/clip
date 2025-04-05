@@ -22,18 +22,18 @@
         "cancel": "Sefsex"
     },
     "about": {
-        "github_title": "PairDrop deg GitHub",
-        "close-about_aria-label": "Mdel Ɣef PairDrop"
+        "github_title": "CLIP.PM deg GitHub",
+        "close-about_aria-label": "Mdel Ɣef CLIP.PM"
     },
     "notifications": {
         "connecting": "Tuqqna…",
         "connected": "Yeqqen"
     },
     "header": {
-        "about_aria-label": "Ldi Ɣef PairDrop",
-        "about_title": "Ɣef PairDrop",
+        "about_aria-label": "Ldi Ɣef CLIP.PM",
+        "about_title": "Ɣef CLIP.PM",
         "language-selector_title": "Fren tutlayt",
-        "install_title": "Sbedd PairDrop",
+        "install_title": "Sbedd CLIP.PM",
         "edit-share-mode": "Ẓreg"
     }
 }

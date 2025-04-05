@@ -249,7 +249,7 @@ and/or *Thinking, Fast and Slow* to learn more.
 <br>
 
 * [Buy me a coffee](https://www.buymeacoffee.com/pairdrop) to pay for the domain and the server, and support libre software.
-* [File bugs, give feedback, submit suggestions](https://github.com/schlagmichdoch/pairdrop/issues)
+* [File bugs, give feedback, submit suggestions](https://github.com/personalmedia/clip/issues)
 * Share PairDrop on social media.
 * Fix bugs and create a pull request.
 * Do some security analysis and make suggestions.
