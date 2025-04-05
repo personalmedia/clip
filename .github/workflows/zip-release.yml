@@ -7,7 +7,7 @@
 # To get a newer version, you will need to update the SHA.
 # You can also reference a tag or branch, but the action may change without warning.
 
-# Create a new zip file from pairdrop-cli whenever a new version tag is pushed
+# Create a new zip file from clip-cli whenever a new version tag is pushed
 
 name: Zip Release
 
@@ -26,11 +26,11 @@ jobs:
       - name: Archive Release
         uses: thedoctor0/zip-release@b57d897cb5d60cb78b51a507f63fa184cfe35554 # v0.7.6
         with:
-          filename: 'pairdrop-cli.zip'
-          directory: 'pairdrop-cli'
+          filename: 'clip-cli.zip'
+          directory: 'clip-cli'
           exclusions: '*.git* /*node_modules/* .editorconfig'
       - name: Upload Release
         uses: ncipollo/release-action@6c75be85e571768fa31b40abf38de58ba0397db5 # v1.13.0
         with:
-          artifacts: "pairdrop-cli/pairdrop-cli.zip"
+          artifacts: "clip-cli/clip-cli.zip"
           token: ${{ secrets.GITHUB_TOKEN }}

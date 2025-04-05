@@ -26,4 +26,4 @@ jobs:
     steps:
     - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
     - name: Build the Docker image
-      run: docker build --pull . -f Dockerfile -t pairdrop
+      run: docker build --pull . -f Dockerfile -t clip

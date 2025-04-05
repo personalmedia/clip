@@ -14,4 +14,4 @@ length=${#lines[@]}
 # Remove the last entry
 unset 'lines[length-1]'
 
-pairdrop "${lines[@]}"
+clip "${lines[@]}"

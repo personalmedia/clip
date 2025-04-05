@@ -6,7 +6,7 @@
   # _Send it_, with [CLIP.PM](https://clip.pm)
 
   <p>
-    Local file sharing <a href="https://pairdrop.net"><strong>in your web browser</strong></a>. 
+    Local file sharing <a href="https://clip.pm"><strong>in your web browser</strong></a>. 
     <br>
     Inspired by Apple's AirDrop.
     <br> 

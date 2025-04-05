@@ -1,5 +1,5 @@
 const cacheVersion = 'v1.11.2';
-const cacheTitle = `pairdrop-cache-${cacheVersion}`;
+const cacheTitle = `clip-cache-${cacheVersion}`;
 const relativePathsToCache = [
     './',
     'index.html',
@@ -228,7 +228,7 @@ const evaluateRequestData = function (request) {
                 });
             }
 
-            const DBOpenRequest = indexedDB.open('pairdrop_store');
+            const DBOpenRequest = indexedDB.open('clip_store');
             DBOpenRequest.onsuccess = e => {
                 const db = e.target.result;
                 for (let i = 0; i < fileObjects.length; i++) {

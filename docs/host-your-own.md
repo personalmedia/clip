@@ -7,7 +7,7 @@ Beware that you have to host your own TURN server to enable transfers between di
 Follow [this guide](https://gabrieltanner.org/blog/turn-server/) to either install coturn directly on your system (Step 1) 
 or deploy it via Docker (Step 5).
 
-You can use the `docker-compose-coturn.yml` in this repository. See [Coturn and PairDrop via Docker Compose](#coturn-and-pairdrop-via-docker-compose).
+You can use the `docker-compose-coturn.yml` in this repository. See [Coturn and PairDrop via Docker Compose](#coturn-and-clip-via-docker-compose).
  
 Alternatively, use a free, pre-configured TURN server like [OpenRelay](https://www.metered.ca/tools/openrelay/)
 
@@ -34,9 +34,9 @@ The easiest way to get PairDrop up and running is by using Docker.
 ### Docker Image from Docker Hub
 
 ```bash
-docker run -d --restart=unless-stopped --name=pairdrop -p 127.0.0.1:3000:3000 lscr.io/linuxserver/pairdrop
+docker run -d --restart=unless-stopped --name=clip -p 127.0.0.1:3000:3000 lscr.io/linuxserver/clip
 ```
-> This image is hosted by [linuxserver.io](https://linuxserver.io). For more information visit https://hub.docker.com/r/linuxserver/pairdrop
+> This image is hosted by [linuxserver.io](https://linuxserver.io). For more information visit https://hub.docker.com/r/linuxserver/clip
 
 
 <br>
@@ -44,7 +44,7 @@ docker run -d --restart=unless-stopped --name=pairdrop -p 127.0.0.1:3000:3000 ls
 ### Docker Image from GitHub Container Registry (ghcr.io)
 
 ```bash
-docker run -d --restart=unless-stopped --name=pairdrop -p 127.0.0.1:3000:3000 ghcr.io/personalmedia/clip
+docker run -d --restart=unless-stopped --name=clip -p 127.0.0.1:3000:3000 ghcr.io/personalmedia/clip
 ```
 
 
@@ -55,7 +55,7 @@ docker run -d --restart=unless-stopped --name=pairdrop -p 127.0.0.1:3000:3000 gh
 #### Build the image
 
 ```bash
-docker build --pull . -f Dockerfile -t pairdrop
+docker build --pull . -f Dockerfile -t clip
 ```
 
 > A GitHub action is set up to do this step automatically at the release of new versions.
@@ -65,7 +65,7 @@ docker build --pull . -f Dockerfile -t pairdrop
 #### Run the image
 
 ```bash
-docker run -d --restart=unless-stopped --name=pairdrop -p 127.0.0.1:3000:3000 -it pairdrop
+docker run -d --restart=unless-stopped --name=clip -p 127.0.0.1:3000:3000 -it clip
 ```
 
 > You must use a server proxy to set the `X-Forwarded-For` header 
@@ -95,14 +95,14 @@ Set options by using the following flags in the `docker run` command:
 #### Set Environment Variables via Docker
 
 Environment Variables are set directly in the `docker run` command: \
-e.g. `docker run -p 127.0.0.1:3000:3000 -it pairdrop -e DEBUG_MODE="true"`
+e.g. `docker run -p 127.0.0.1:3000:3000 -it clip -e DEBUG_MODE="true"`
 
 Overview of available Environment Variables are found [here](#environment-variables).
 
 Example:
 ```bash
 docker run -d \
-    --name=pairdrop \
+    --name=clip \
     --restart=unless-stopped \
     -p 127.0.0.1:3000:3000 \
     -e PUID=1000 \
@@ -113,7 +113,7 @@ docker run -d \
     -e RATE_LIMIT=false \
     -e DEBUG_MODE=false \
     -e TZ=Etc/UTC \
-    lscr.io/linuxserver/pairdrop 
+    lscr.io/linuxserver/clip 
 ```
 
 <br>
@@ -125,9 +125,9 @@ Here's an example docker compose file:
 ```yaml
 version: "3"
 services:
-    pairdrop:
-        image: "lscr.io/linuxserver/pairdrop:latest"
-        container_name: pairdrop
+    clip:
+        image: "lscr.io/linuxserver/clip:latest"
+        container_name: clip
         restart: unless-stopped
         environment:
             - PUID=1000 # UID to run the application as
@@ -310,7 +310,7 @@ RATE_LIMIT=1
 > To find the correct number to use for this setting:
 >
 > 1. Start PairDrop with `DEBUG_MODE=True` and `RATE_LIMIT=1`
-> 2. Make a `get` request to `/ip` of the PairDrop instance (e.g. `https://pairdrop-example.net/ip`)
+> 2. Make a `get` request to `/ip` of the PairDrop instance (e.g. `https://clip-example.net/ip`)
 > 3. Check if the IP address returned in the response matches your public IP address (find out by visiting e.g. https://whatsmyip.com/)
 > 4. You have found the correct number if the IP addresses match. If not, then increase `RATE_LIMIT` by one and redo 1. - 4.
 >
@@ -350,7 +350,7 @@ WS_FALLBACK=true
 > Provides PairDrop to clients with an included websocket fallback \
 > if the peer to peer WebRTC connection is not available to the client.
 >
-> This is not used on the official https://pairdrop.net website, 
+> This is not used on the official https://clip.pm website, 
 > but you can activate it on your self-hosted instance.\
 > This is especially useful if you connect to your instance via a VPN (as most VPN services block WebRTC completely in 
 > order to hide your real IP address). ([Read more here](https://privacysavvy.com/security/safe-browsing/disable-webrtc-chrome-firefox-safari-opera-edge/)).
@@ -398,12 +398,12 @@ RTC_CONFIG="rtc_config.json"
 <br>
 
 You can host an instance that uses another signaling server
-This can be useful if you don't want to trust the client files that are hosted on another instance but still want to connect to devices that use https://pairdrop.net.
+This can be useful if you don't want to trust the client files that are hosted on another instance but still want to connect to devices that use https://clip.pm.
 
 ### Specify Signaling Server
 
 ```bash
-SIGNALING_SERVER="pairdrop.net"
+SIGNALING_SERVER="clip.pm"
 ```
 
 > Default: `false`
@@ -413,13 +413,13 @@ SIGNALING_SERVER="pairdrop.net"
 > By using `SIGNALING_SERVER`, you can host an instance that uses another signaling server.
 > 
 > This can be useful if you want to ensure the integrity of the client files and don't want to trust the client files that are hosted on another PairDrop instance but still want to connect to devices that use the other instance.
-> E.g. host your own client files under *pairdrop.your-domain.com* but use the official signaling server under *pairdrop.net*
-> This way devices connecting to *pairdrop.your-domain.com* and *pairdrop.net* can discover each other.
+> E.g. host your own client files under *clip.your-domain.com* but use the official signaling server under *clip.pm*
+> This way devices connecting to *clip.your-domain.com* and *clip.pm* can discover each other.
 > 
 > Beware that the version of your PairDrop server must be compatible with the version of the signaling server.
 >
 > `SIGNALING_SERVER` must be a valid url without the protocol prefix. 
-> Examples of valid values: `pairdrop.net`, `pairdrop.your-domain.com:3000`, `your-domain.com/pairdrop`
+> Examples of valid values: `clip.pm`, `clip.your-domain.com:3000`, `your-domain.com/clip`
 
 <br>
 
@@ -427,7 +427,7 @@ SIGNALING_SERVER="pairdrop.net"
 
 ```bash
 DONATION_BUTTON_ACTIVE=true
-DONATION_BUTTON_LINK="https://www.buymeacoffee.com/pairdrop"
+DONATION_BUTTON_LINK="https://www.buymeacoffee.com/clip"
 DONATION_BUTTON_TITLE="Buy me a coffee"
 TWITTER_BUTTON_ACTIVE=true
 TWITTER_BUTTON_LINK="https://twitter.com/account"
@@ -496,8 +496,8 @@ server {
 
 server {
     listen       443 ssl http2;
-    ssl_certificate /etc/ssl/certs/pairdrop-dev.crt;
-    ssl_certificate_key /etc/ssl/certs/pairdrop-dev.key;
+    ssl_certificate /etc/ssl/certs/clip-dev.crt;
+    ssl_certificate_key /etc/ssl/certs/clip-dev.key;
 
     expires epoch;
 
@@ -526,8 +526,8 @@ server {
 
 server {
     listen       443 ssl http2;
-    ssl_certificate /etc/ssl/certs/pairdrop-dev.crt;
-    ssl_certificate_key /etc/ssl/certs/pairdrop-dev.key;
+    ssl_certificate /etc/ssl/certs/clip-dev.crt;
+    ssl_certificate_key /etc/ssl/certs/clip-dev.key;
 
     expires epoch;
 
@@ -560,7 +560,7 @@ a2enmod proxy_http
 
 Create a new configuration file under `/etc/apache2/sites-available` (on Debian)
 
-**pairdrop.conf**
+**clip.conf**
 
 #### Allow HTTP and HTTPS requests
 
@@ -587,7 +587,7 @@ Create a new configuration file under `/etc/apache2/sites-available` (on Debian)
 Activate the new virtual host and reload Apache:
 
 ```bash
-a2ensite pairdrop
+a2ensite clip
 ```
 
 ```bash
@@ -658,7 +658,7 @@ docker compose -f docker-compose-dev.yml up --no-deps --build
 
 Now point your web browser to `http://localhost:8080`.
 
-- To debug the Node.js server, run `docker logs pairdrop`.
+- To debug the Node.js server, run `docker logs clip`.
 - After changes to the code you have to rerun the `docker compose` command
 
 <br>
