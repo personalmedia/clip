@@ -1,5 +1,5 @@
 # Priorities
-- CLIP.PM should be extremely simple, clean, and easy to use.
+- CLIP.PM should be extremely simple, clean, and easy to use. KISS and DRY.
 - The main user flow should never be obstructed!
 - New features must be tested thoroughly before we are able to merge them.
 - Stability always comes first!
