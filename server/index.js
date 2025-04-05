@@ -30,7 +30,7 @@ process.on('unhandledRejection', (reason, promise) => {
     console.log(reason)
 })
 
-// Evaluate arguments for deployment with Docker and Node.js
+// Evaluate arguments for deployment with Node.js
 let conf = {};
 
 conf.debugMode = process.env.DEBUG_MODE === "true";

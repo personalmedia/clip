@@ -1,4 +1,4 @@
-const cacheVersion = 'v1.11.2';
+const cacheVersion = 'v25.04.04';
 const cacheTitle = `clip-cache-${cacheVersion}`;
 const relativePathsToCache = [
     './',

@@ -45,11 +45,11 @@ This clip-cli version was released alongside v1.10.4
 #### Linux / Mac
 1. Download the latest _clip-cli.zip_ from the [releases page](https://github.com/personalmedia/clip/releases)
    ```shell
-   wget "https://github.com/personalmedia/clip/releases/download/v1.11.2/clip-cli.zip"
+   wget "https://github.com/personalmedia/clip/releases/download/v25.04.04/clip-cli.zip"
    ```
    or
    ```shell
-   curl -LO "https://github.com/personalmedia/clip/releases/download/v1.11.2/clip-cli.zip"
+   curl -LO "https://github.com/personalmedia/clip/releases/download/v25.04.04/clip-cli.zip"
    ```
 2. Unzip the archive to a folder of your choice e.g. `/usr/share/clip-cli/`
    ```shell

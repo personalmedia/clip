@@ -94,8 +94,6 @@ Connect to others in complex network situations, or over the Internet.
 
 [FAQ](docs/faq.md)
 
-[Host your own instance with Docker or Node.js](docs/host-your-own.md).
-
 <br />
 <br />
 

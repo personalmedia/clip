@@ -36,15 +36,14 @@ If applicable, add screenshots to help explain your problem.
 
 **Bug occurs on official PairDrop instance https://clip.pm/**
 No | Yes
-Version: v1.11.2
+Version: v25.04.04
 
 **Bug occurs on self-hosted PairDrop instance**
 No | Yes
 
 **Self-Hosted Setup**
-Proxy: Nginx | Apache2
-Deployment: docker run | docker compose | npm run start:prod
-Version: v1.11.2
+Proxy: Caddy
+Version: v25.04.04
 
 **Additional context**
 Add any other context about the problem here.

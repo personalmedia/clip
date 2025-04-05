@@ -4,10 +4,7 @@
 
 Beware that you have to host your own TURN server to enable transfers between different networks.
 
-Follow [this guide](https://gabrieltanner.org/blog/turn-server/) to either install coturn directly on your system (Step 1) 
-or deploy it via Docker (Step 5).
-
-You can use the `docker-compose-coturn.yml` in this repository. See [Coturn and CLIP via Docker Compose](#coturn-and-clip-via-docker-compose).
+Follow [this guide](https://gabrieltanner.org/blog/turn-server/) to either install coturn directly on your system (Step 1).
  
 Alternatively, use a free, pre-configured TURN server like [OpenRelay](https://www.metered.ca/tools/openrelay/)
 
@@ -25,138 +22,18 @@ These may include:
 
 Naturally, this is also recommended to increase security.
 
-<br>
-
-## Deployment with Docker
-
-The easiest way to get CLIP up and running is by using Docker.
-
-### Docker Image from Docker Hub
-
-```bash
-docker run -d --restart=unless-stopped --name=clip -p 127.0.0.1:3000:3000 lscr.io/linuxserver/clip
-```
-> This image is hosted by [linuxserver.io](https://linuxserver.io). For more information visit https://hub.docker.com/r/linuxserver/clip
-
-
-<br>
-
-### Docker Image from GitHub Container Registry (ghcr.io)
-
-```bash
-docker run -d --restart=unless-stopped --name=clip -p 127.0.0.1:3000:3000 ghcr.io/personalmedia/clip
-```
-
-
-<br>
-
-### Docker Image self-built
-
-#### Build the image
-
-```bash
-docker build --pull . -f Dockerfile -t clip
-```
-
-> A GitHub action is set up to do this step automatically at the release of new versions.
->
-> `--pull` ensures always the latest node image is used.
-
-#### Run the image
-
-```bash
-docker run -d --restart=unless-stopped --name=clip -p 127.0.0.1:3000:3000 -it clip
-```
-
-> You must use a server proxy to set the `X-Forwarded-For` header 
-> to prevent all clients from discovering each other (See [#HTTP-Server](#http-server)).
->
-> To prevent bypassing the proxy by reaching the docker container directly, 
-> `127.0.0.1` is specified in the run command.
-
-
-<br>
-
-### Flags
-
-Set options by using the following flags in the `docker run` command:
-
 #### Port
 
 ```bash
 -p 127.0.0.1:8080:3000
 ```
 
-> Specify the port used by the docker image
->
-> - 3000 -> `-p 127.0.0.1:3000:3000`
-> - 8080 -> `-p 127.0.0.1:8080:3000`
-
-#### Set Environment Variables via Docker
-
-Environment Variables are set directly in the `docker run` command: \
-e.g. `docker run -p 127.0.0.1:3000:3000 -it clip -e DEBUG_MODE="true"`
-
-Overview of available Environment Variables are found [here](#environment-variables).
-
-Example:
-```bash
-docker run -d \
-    --name=clip \
-    --restart=unless-stopped \
-    -p 127.0.0.1:3000:3000 \
-    -e PUID=1000 \
-    -e PGID=1000 \
-    -e WS_SERVER=false \
-    -e WS_FALLBACK=false \
-    -e RTC_CONFIG=false \
-    -e RATE_LIMIT=false \
-    -e DEBUG_MODE=false \
-    -e TZ=Etc/UTC \
-    lscr.io/linuxserver/clip 
-```
-
-<br>
-
-## Deployment with Docker Compose
-
-Here's an example docker compose file:
-
-```yaml
-version: "3"
-services:
-    clip:
-        image: "lscr.io/linuxserver/clip:latest"
-        container_name: clip
-        restart: unless-stopped
-        environment:
-            - PUID=1000 # UID to run the application as
-            - PGID=1000 # GID to run the application as
-            - WS_FALLBACK=false # Set to true to enable websocket fallback if the peer to peer WebRTC connection is not available to the client.
-            - RATE_LIMIT=false # Set to true to limit clients to 1000 requests per 5 min.
-            - RTC_CONFIG=false # Set to the path of a file that specifies the STUN/TURN servers.
-            - DEBUG_MODE=false # Set to true to debug container and peer connections.
-            - TZ=Etc/UTC # Time Zone
-        ports:
-            - "127.0.0.1:3000:3000" # Web UI
-```
-
-Run the compose file with `docker compose up -d`.
-
-> You must use a server proxy to set the `X-Forwarded-For` header
-> to prevent all clients from discovering each other (See [#HTTP-Server](#http-server)).
->
-> To prevent bypassing the proxy by reaching the Docker container 
-> directly, `127.0.0.1` is specified in the `ports` argument.
-
-<br>
-
 ## Deployment with Node.js
 
 Clone this repository and enter the folder
 
 ```bash
-git clone https://github.com/personalmedia/clip.git && cd CLIP
+git clone https://github.com/personalmedia/clip.git && cd clip
 ```
 
 Install all dependencies with NPM:
@@ -460,12 +337,6 @@ PRIVACYPOLICY_BUTTON_TITLE="Open our privacy policy"
 
 <br>
 
-## Healthcheck
-
-> The Docker Image hosted on `ghcr.io` and the self-built Docker Image include a healthcheck.
->
-> Read more about [Docker Swarm Usage](docker-swarm-usage.md#docker-swarm-usage).
-
 <br>
 
 ## HTTP-Server
@@ -596,38 +467,6 @@ service apache2 reload
 
 <br>
 
-## Coturn and CLIP via Docker Compose
-
-### Setup container
-To run coturn and CLIP at once by using the `docker-compose-coturn.yml` with TURN over TLS enabled
-you need to follow these steps:
-
-1. Generate or retrieve certificates for your `<DOMAIN>` (e.g. letsencrypt / certbot)
-2. Create `./ssl` folder: `mkdir ssl`
-3. Copy your ssl-certificates and the privkey to `./ssl` 
-4. Restrict access to `./ssl`: `chown -R nobody:nogroup ./ssl`
-5. Create a dh-params file: `openssl dhparam -out ./ssl/dhparams.pem 4096` 
-6. Copy `rtc_config_example.json` to `rtc_config.json`
-7. Copy `turnserver_example.conf` to `turnserver.conf`
-8. Change `<DOMAIN>` in both files to the domain where your CLIP instance is running 
-9. Change `username` and `password` in `turnserver.conf` and `rtc-config.json`
-10. To start the container including coturn run: \
-  `docker compose -f docker-compose-coturn.yml up -d`
-
-<br>
-
-#### Setup container
-To restart the container including coturn run: \
-  `docker compose -f docker-compose-coturn.yml restart`
-
-<br>
-
-#### Setup container
-To stop the container including coturn run: \
-  `docker compose -f docker-compose-coturn.yml stop`
-
-<br>
-
 ### Firewall
 To run CLIP including its own coturn-server you need to punch holes in the firewall. These ports must be opened additionally:
 - 3478 tcp/udp
@@ -642,67 +481,20 @@ To run CLIP including its own coturn-server you need to punch holes in the firew
 
 All files needed for developing are available in the folder `./dev`.
 
-For convenience, there is also a docker compose file for developing:
-
-#### Developing with docker compose
-First, [Install docker with docker compose.](https://docs.docker.com/compose/install/)
-
-Then, clone the repository and run docker compose:
-
-```bash
-git clone https://github.com/personalmedia/clip.git && cd CLIP
-```
-```bash
-docker compose -f docker-compose-dev.yml up --no-deps --build
-```
-
-Now point your web browser to `http://localhost:8080`.
-
-- To debug the Node.js server, run `docker logs clip`.
-- After changes to the code you have to rerun the `docker compose` command
-
 <br>
 
 #### Testing PWA related features
 
 PWAs requires the app to be served under a correctly set up and trusted TLS endpoint.
 
-The NGINX container creates a CA certificate and a website certificate for you. 
-To correctly set the common name of the certificate, 
-you need to change the FQDN environment variable in `docker-compose-dev.yml`
-to the fully qualified domain name of your workstation. (Default: localhost)
-
-If you want to test PWA features, you need to trust the CA of the certificate for your local deployment. \
-For your convenience, you can download the crt file from `http://<Your FQDN>:8080/ca.crt`. \
-Install that certificate to the trust store of your operating system. \
-
-##### Windows
-- Make sure to install it to the `Trusted Root Certification Authorities` store.
-
-##### macOS
-- Double-click the installed CA certificate in `Keychain Access`,
-- expand `Trust`, and select `Always Trust` for SSL.
-
-##### Firefox
-Firefox uses its own trust store. To install the CA:
-- point Firefox at `http://<Your FQDN>:8080/ca.crt` (Default: `http://localhost:8080/ca.crt`)
-- When prompted, select `Trust this CA to identify websites` and click _OK_.
-
-Alternatively:
-1. Download `ca.crt` from `http://<Your FQDN>:8080/ca.crt` (Default: `http://localhost:8080/ca.crt`)
-2. Go to `about:preferences#privacy` scroll down to `Security` and `Certificates` and click `View Certificates`
-3. Import the downloaded certificate file (step 1)
-
 ##### Chrome
 - When using Chrome, you need to restart Chrome so it reloads the trust store (`chrome://restart`).
-- Additionally, after installing a new cert, you need to clear the Storage (DevTools → Application → Clear storage → Clear site data).
 
 ##### Google Chrome
 - To skip the installation of the certificate, you can also open `chrome://flags/#unsafely-treat-insecure-origin-as-secure`
 - The feature `Insecure origins treated as secure` must be enabled and the list must include your CLIP test instance. E.g.: `http://127.0.0.1:3000,https://127.0.0.1:8443`
 
 Please note that the certificates (CA and webserver cert) expire after a day.
-Also, whenever you restart the NGINX Docker container new certificates are created.
 
 The site is served on `https://<Your FQDN>:8443` (Default: `https://localhost:8443`).
 
